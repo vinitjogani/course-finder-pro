@@ -1,1 +1,1 @@
-web: gunicorn coursefinder:app
+web: gunicorn course_finder:app  --log-file=-
