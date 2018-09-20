@@ -3,7 +3,7 @@ import re
 from flask import Flask, request as freq
 from flask_cors import CORS
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static', static_url_path='')
 CORS(app)
 
 request = {
@@ -167,7 +167,12 @@ def finder(request):
     return lines
 
 
-@app.route("/get-courses", methods=['POST', 'GET'])
+@app.route("/get-courses", methods=['POST'])
 def get_courses():
     request = json.loads(json.loads(freq.data)['request'])
     return json.dumps(finder(request))
+
+
+@app.route('/')
+def root():
+    return app.send_static_file('index.html')
