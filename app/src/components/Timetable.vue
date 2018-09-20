@@ -1,24 +1,13 @@
 <template>
-  <div>
+  <div style="overflow-y: hidden; height: 100vh;">
     <h1 class="eighty">Perfect! Let's move on...</h1>
     <p class="eighty" style="text-align: left; padding-left: 10px;">
       Proceed by filling in your timetable by clicking and dragging over the times you won't be available. Note 
       that if you are only looking for a courses in a particular semester, you may choose to not fill the other
       semester's timetable.
     </p>
-    <div class="hbox eighty" style="height: calc(100vh - 250px);">
+    <div class="hbox eighty" style="height: calc(100vh - 255px);">
         <div class="vbox" v-for="(tt, term) in ['Fall', 'Winter']" :key='tt'>
-            <!-- <div class="tools">
-                <div class="left" v-if="term == 0">
-                    Add your timetable
-                </div>
-                <div class="right" v-if="term == 1">
-                   <button v-on:click="timetable[0].splice(0); timetable[1].splice(0);">
-                       Clear
-                    </button>
-                   <button v-on:click="next">Next</button>
-                </div>
-            </div> -->
             <div class="heading">{{tt}}</div>
             <div class="hbox timetable">
                 <div class="day hours">
@@ -44,7 +33,17 @@
         </div>
     </div>
     <br><br>
+
     <button class="primary" v-on:click="next">NEXT</button>
+    <button class="primary" style="margin-right:25px" 
+      v-on:click="$store.commit('navigate', '/taken')">
+      BACK
+    </button>
+    <button class="primary" style="margin-right:25px" 
+      v-on:click="timetable = [[], []]">
+      CLEAR
+    </button>
+    
   </div>
 </template>
 
@@ -94,7 +93,7 @@ export default {
     },
     next() {
       this.$store.commit("setTimetable", this.timetable);
-      this.$emit("next");
+      this.$store.commit("navigate", "/results");
     }
   },
   mounted() {
@@ -140,14 +139,14 @@ body {
 }
 
 .time {
-  border-bottom: solid;
-  border-color: rgba(0, 0, 0, 0.05);
+  border-bottom-style: solid;
+  border-bottom-color: rgba(0, 0, 0, 0.05);
   cursor: pointer;
 }
 
 .hour {
-  border-bottom: solid;
-  border-color: rgba(0, 0, 0, 0.1);
+  border-bottom-style: solid;
+  border-bottom-color: rgba(0, 0, 0, 0.1);
 }
 
 .hours .hour {
@@ -183,14 +182,6 @@ body {
   background-color: #292929;
 }
 
-.tools {
-  height: 60px;
-  padding: 15px;
-  font-size: 20px;
-  box-sizing: border-box;
-  background-color: #191919;
-}
-
 .left {
   text-align: left;
   font-weight: bolder;
@@ -203,16 +194,5 @@ body {
 .left,
 .right {
   color: #b62a25;
-}
-
-.tools button {
-  background: #b62a25;
-  outline: none;
-  border: none;
-  padding: 10px;
-  font-weight: bolder;
-  margin-top: -5px;
-  cursor: pointer;
-  margin-right: 10px;
 }
 </style>

@@ -5,6 +5,7 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
     state: {
+        path: "/taken",
         request: {
             breadths: [],
             campus: [],
@@ -19,6 +20,9 @@ const store = new Vuex.Store({
         }
     },
     mutations: {
+        navigate(state, path) {
+            state.path = path;
+        },
         setBreadths(state, breadths) {
             state.request.breadths = breadths;
         },

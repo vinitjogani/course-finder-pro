@@ -1,11 +1,18 @@
 <template>
-  <div id="app">
+  <div id="app" style="overflow-y: hidden;">
 
-    <Taken v-if="path == '/taken'"  v-on:next="path = '/timetable'" />
+    <transition name="fade">
+      <Taken style="height: 100vh; box-sizing: border-box;" 
+        v-if="$store.state.path == '/taken'"  />
+    </transition>
 
-    <Timetable v-if="path == '/timetable'" v-on:next="path = '/results'" />
+    <transition name="fade">
+      <Timetable v-if="$store.state.path == '/timetable'" />
+    </transition>
 
-    <Results v-if="path == '/results'" />
+    <transition name="fade">
+      <Results v-if="$store.state.path == '/results'" />
+    </transition>
 
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 
@@ -31,14 +38,8 @@ export default {
       courses: [],
       filtered_courses: [],
       query: "",
-      path: "/taken",
       timetable: [[], []]
     };
-  },
-  methods: {
-    setTimetable() {
-      this.path = "/results";
-    }
   }
 };
 </script>
@@ -51,6 +52,7 @@ export default {
   text-align: center;
   color: #2c3e50;
   min-height: 100vh;
+  max-height: 100vh;
 }
 
 body {
@@ -88,5 +90,24 @@ button.primary {
   font-size: 15px;
   float: right;
   margin-right: 10%;
+}
+
+.fade-enter-active {
+  transition-property: all;
+  transition-duration: 0.5s;
+  transition-delay: 0.5s;
+}
+
+.fade-leave-active {
+  transition-property: all;
+  transition-duration: 0.5s;
+}
+
+.fade-enter {
+  margin-top: 100vh;
+}
+
+.fade-leave-to {
+  opacity: 0;
 }
 </style>

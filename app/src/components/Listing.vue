@@ -71,6 +71,7 @@ export default {
   grid-column: 2;
   padding: 10px;
   text-align: center;
+  overflow: auto;
 }
 </style>
 

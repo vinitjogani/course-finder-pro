@@ -37,7 +37,8 @@ export default {
           .map(x => x.trim())
           .filter(x => x != "")
       );
-      this.$emit("next");
+
+      this.$store.commit("navigate", "/timetable");
     }
   }
 };

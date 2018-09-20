@@ -73,13 +73,11 @@ export default {
     },
     refresh() {
       var req = JSON.stringify(this.$store.state.request);
-      axios
-        .post("http://localhost:5000/get-courses", { request: req })
-        .then(data => {
-          this.courses = data.data;
-          console.log(data);
-          document.getElementsByClassName("loading")[0].style.display = "none";
-        });
+      axios.post("/get-courses", { request: req }).then(data => {
+        this.courses = data.data;
+        console.log(data);
+        document.getElementsByClassName("loading")[0].style.display = "none";
+      });
     },
     search(query) {
       this.query = query;

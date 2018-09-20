@@ -1,6 +1,11 @@
 <template>
     <div class="sidebar">
-        <h1 style="color: white;">Filter courses</h1>
+        <h1 style="color: white; display:inline-block;">Filter courses</h1>
+        
+        <button class="primary" style="margin-top:25px" 
+          v-on:click="$store.commit('navigate', '/timetable')">
+          BACK
+        </button>
 
         <CheckboxGroup v-on:changed="updateBreadths" ref="breadths" title="Breadths">
             <Checkbox text="BR1: Creative and Cultural Expression" :value="1" />
