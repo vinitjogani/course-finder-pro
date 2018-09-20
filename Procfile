@@ -1,2 +1,1 @@
-set FLASK_APP := coursefinder.py
-flask run
+web: gunicorn coursefinder:app
