@@ -72,6 +72,7 @@ export default {
   padding: 10px;
   text-align: center;
   overflow: auto;
+  height: 100vh;
 }
 </style>
 
