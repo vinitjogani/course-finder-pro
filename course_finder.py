@@ -16,10 +16,15 @@ request = {
     'taken': ['CSC148H1', 'PHY132H1', 'MAT135H1', 'MAT136H1', 'ECO101H1', 'ECO102H1',
               'COG250Y1', 'CSC165H1', 'CSC207H1', 'MAT223H1', 'APM236H1', 'CSC236H1'],
     'timetable': [
-        ('MONDAY', 9, 12), ('MONDAY', 15, 17),
-        ('TUESDAY', 9, 11), ('TUESDAY', 14, 17), ('TUESDAY', 20, 21),
-        ('WEDNESDAY', 11, 12), ('WEDNESDAY', 18, 21),
-        ('THURSDAY', 13, 17), ('FRIDAY', 15, 17)
+        [
+            # Fall timetable
+        ],
+        [
+            ('MONDAY', 9, 12), ('MONDAY', 15, 17),
+            ('TUESDAY', 9, 11), ('TUESDAY', 14, 17), ('TUESDAY', 20, 21),
+            ('WEDNESDAY', 11, 12), ('WEDNESDAY', 18, 21),
+            ('THURSDAY', 13, 17), ('FRIDAY', 15, 17)
+        ],
     ]
 }
 
@@ -98,20 +103,23 @@ def irrelevant_course(course, request):
 
 
 def irrelevant_section(section, request):
-    return (not section['enrolment'] < section['size']
-            or not section['code'].startswith('L')
+    return (not section['enrolment'] < section['size'] or
+            not section['code'].startswith('L')
             or not len(section['times']))
 
 
-def get_times(section, request):
+def set_times(term, section, request):
     times = []
     for time in section['times']:
         tup = (time['day'], time['start'] / 3600, time['end'] / 3600)
-        for scheduled_class in request['timetable']:
-            if does_clash(scheduled_class, tup):
-                return []
+        for scheduled_class in request['timetable'][term]:
+            if does_clash(json.loads(scheduled_class), tup):
+                section['times'] = []
+                return
+
         times.append(tup)
-    return times
+
+    section['times'] = times
 
 
 def build_output(course, section):
@@ -145,7 +153,7 @@ def finder(request):
             continue
 
         for section in course['meeting_sections']:
-            section['times'] = get_times(section, request)
+            set_times('Winter' in course['term'], section, request)
 
             if 'L990' in section['code']:
                 section['times'].append(['ONLINE', 0.0, 0.0])
